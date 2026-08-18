@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+  <title>尤蝶 · 科技简历</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#2563eb',
+            accent: '#7c3aed',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* ── 基础重置 & 变量（移动优先） ── */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #f2f6fc;
+      --card: rgba(255, 255, 255, 0.85);
+      --border: rgba(59, 130, 246, 0.15);
+      --primary: #2563eb;
+      --accent: #7c3aed;
+      --text: #1e293b;
+      --text-light: #475569;
+      --shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+      --radius: 12px;
+      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --touch-min: 44px;
+    }
+    [data-theme="dark"] {
+      --bg: #0e131f;
+      --card: rgba(22, 30, 48, 0.85);
+      --border: rgba(64, 180, 255, 0.15);
+      --primary: #3bc9ff;
+      --accent: #b388ff;
+      --text: #e8edf5;
+      --text-light: #a0b3cc;
+      --shadow: 0 4px 16px rgba(0, 20, 40, 0.5);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding-top: 60px;
+      transition: background 0.3s, color 0.3s;
+      min-height: 100vh;
+      background-image: radial-gradient(circle at 20% 30%, rgba(37, 99, 235, 0.04) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 70%, rgba(124, 58, 237, 0.04) 0%, transparent 50%);
+    }
+    a { color: var(--primary); text-decoration: none; }
+    a:hover { color: var(--accent); }
+
+    /* ── 全局滚动进度条 ── */
+    #scrollProgress {
+      position: fixed;
+      top: 0; left: 0;
+      height: 3px;
+      z-index: 10000;
+      background: linear-gradient(90deg, #22d3ee, #34d399, #10b981);
+      width: 0%;
+      transition: width 0.1s linear;
+      border-radius: 0 2px 2px 0;
+      box-shadow: 0 0 8px rgba(34, 211, 238, 0.4);
+    }
+
+    /* ── 导航（移动优先） ── */
+    .navbar {
+      position: fixed;
+      top: 0; left: 0; width: 100%;
+      background: rgba(255, 255, 255, 0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 8px 16px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 1000;
+      transition: background 0.3s;
+      gap: 6px;
+    }
+    [data-theme="dark"] .navbar { background: rgba(14, 19, 31, 0.85); }
+    .nav-name {
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 6px 14px;
+      border-radius: 40px;
+      border: 1px solid transparent;
+      background: rgba(37, 99, 235, 0.06);
+      line-height: 1.4;
+    }
+    .nav-name:hover { border-color: var(--primary); }
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 16px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+    .nav-links a {
+      color: var(--text-light);
+      padding: 4px 0;
+      border-bottom: 2px solid transparent;
+      white-space: nowrap;
+    }
+    .nav-links a:hover { color: var(--primary); border-bottom-color: var(--primary); }
+    .nav-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .nav-actions button {
+      background: rgba(0,0,0,0.04);
+      border: 1px solid var(--border);
+      border-radius: 40px;
+      padding: 6px 14px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      color: var(--text-light);
+      transition: 0.2s;
+      font-family: inherit;
+      min-height: var(--touch-min);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .nav-actions button:hover {
+      background: rgba(37, 99, 235, 0.08);
+      border-color: var(--primary);
+      color: var(--text);
+    }
+    [data-theme="dark"] .nav-actions button { background: rgba(255,255,255,0.04); }
+    [data-theme="dark"] .nav-actions button:hover { background: rgba(59, 201, 255, 0.12); }
+    .theme-toggle {
+      background: none !important;
+      border: none !important;
+      font-size: 1.2rem;
+      padding: 0 8px;
+    }
+    .theme-toggle:hover { color: var(--primary) !important; }
+
+    /* ── 英雄区 ── */
+    .hero {
+      padding: 20px 0 12px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 8px;
+    }
+    .hero h1 {
+      font-size: 2.2rem;
+      font-weight: 600;
+      letter-spacing: -0.5px;
+    }
+    .hero h1 span { color: var(--primary); }
+    .hero .tagline {
+      font-size: 0.95rem;
+      font-weight: 400;
+      color: var(--primary);
+      margin: 4px 0 8px;
+    }
+    /* 打字机容器 */
+    .typewriter-wrap {
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: var(--accent);
+      margin: 4px 0 8px;
+      min-height: 1.6em;
+    }
+    .hero p {
+      font-size: 0.95rem;
+      color: var(--text-light);
+      max-width: 680px;
+    }
+    .hero-badge {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 8px 0 12px;
+    }
+    .hero-badge span {
+      background: rgba(37, 99, 235, 0.06);
+      border: 1px solid var(--border);
+      border-radius: 40px;
+      padding: 4px 16px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-light);
+    }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 4px;
+    }
+    .btn {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 10px 28px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: 0.2s;
+      font-family: inherit;
+      box-shadow: 0 4px 16px rgba(37, 99, 235, 0.2);
+      min-height: var(--touch-min);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn:hover {
+      background: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(124, 58, 237, 0.25);
+    }
+    .btn-outline {
+      background: transparent;
+      border: 1.5px solid var(--primary);
+      color: var(--primary);
+      box-shadow: none;
+    }
+    .btn-outline:hover {
+      background: rgba(37, 99, 235, 0.06);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* ── 亮点卡片 ── */
+    .highlight-item {
+      background: var(--card);
+      padding: 14px 10px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      text-align: center;
+      box-shadow: var(--shadow);
+      transition: 0.2s;
+    }
+    .highlight-item:hover { transform: translateY(-3px); border-color: var(--primary); }
+    .highlight-item .num {
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: var(--primary);
+      display: block;
+      line-height: 1.2;
+    }
+    .highlight-item .label { font-size: 0.75rem; color: var(--text-light); }
+
+    /* ── 通用章节 ── */
+    .section { margin: 32px 0 16px; }
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 18px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-title::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--border), transparent);
+    }
+
+    /* ── Tabs ── */
+    .tabs {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 4px;
+    }
+    .tab-btn {
+      background: transparent;
+      border: none;
+      padding: 6px 18px;
+      font-weight: 500;
+      font-size: 0.85rem;
+      color: var(--text-light);
+      cursor: pointer;
+      border-radius: 40px 40px 0 0;
+      transition: 0.2s;
+      font-family: inherit;
+      min-height: var(--touch-min);
+    }
+    .tab-btn:hover { background: rgba(37, 99, 235, 0.06); color: var(--text); }
+    .tab-btn[aria-selected="true"] {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+    }
+    [data-theme="dark"] .tab-btn[aria-selected="true"] { color: #0e131f; }
+    .tab-panel { display: none; }
+    .tab-panel[role="tabpanel"] { display: block; }
+
+    /* ── 经历卡片 ── */
+    .exp-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      border: 1px solid var(--border);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      margin-bottom: 16px;
+      box-shadow: var(--shadow);
+      transition: 0.2s;
+    }
+    .exp-card:hover { border-color: var(--primary); transform: translateY(-2px); }
+    .exp-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 4px 8px;
+      margin-bottom: 6px;
+    }
+    .exp-title { font-weight: 600; font-size: 1.05rem; }
+    .exp-org {
+      color: var(--primary);
+      font-weight: 500;
+      font-size: 0.8rem;
+      background: rgba(37, 99, 235, 0.08);
+      padding: 0 14px;
+      border-radius: 30px;
+    }
+    .exp-date {
+      color: var(--text-light);
+      font-size: 0.7rem;
+      border: 1px solid var(--border);
+      padding: 0 12px;
+      border-radius: 30px;
+    }
+    .exp-desc {
+      margin-top: 8px;
+      padding-left: 18px;
+      list-style: disc;
+      color: var(--text-light);
+      font-size: 0.9rem;
+    }
+    .exp-desc li { margin-bottom: 4px; }
+    .exp-screenshot {
+      margin-top: 12px;
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--card);
+      transition: 0.2s;
+    }
+    .exp-screenshot img { display: block; width: 100%; height: auto; max-width: 420px; margin: 0 auto; }
+    .exp-screenshot:hover { border-color: var(--primary); }
+
+    /* ── 项目卡片 ── */
+    .project-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      border: 1px solid var(--border);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      margin-bottom: 16px;
+      box-shadow: var(--shadow);
+      transition: 0.2s;
+    }
+    .project-card:hover { border-color: var(--primary); transform: translateY(-2px); }
+    .project-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 6px 0 4px;
+    }
+    .project-stack span {
+      background: rgba(37, 99, 235, 0.06);
+      padding: 2px 14px;
+      border-radius: 30px;
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: var(--text-light);
+      border: 1px solid var(--border);
+    }
+
+    /* ── 技能矩阵 ── */
+    .skill-item {
+      background: var(--card);
+      padding: 12px 16px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      box-shadow: var(--shadow);
+    }
+    .skill-item .skill-label {
+      font-weight: 500;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+    }
+    .skill-bar {
+      height: 4px;
+      background: var(--border);
+      border-radius: 4px;
+      margin-top: 8px;
+      overflow: hidden;
+    }
+    .skill-bar .fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      border-radius: 4px;
+      width: 0%;
+    }
+
+    /* ── 证书 ── */
+    .cert-group { margin-bottom: 16px; }
+    .cert-group-title {
+      font-weight: 500;
+      color: var(--primary);
+      font-size: 0.8rem;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+      border-left: 3px solid var(--primary);
+      padding-left: 12px;
+      text-transform: uppercase;
+    }
+    .cert-group-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding-left: 16px;
+    }
+    .cert-tag {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 40px;
+      padding: 4px 18px;
+      font-size: 0.8rem;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      box-shadow: var(--shadow);
+    }
+    .cert-tag:hover { border-color: var(--primary); }
+    .cert-image-item {
+      text-align: center;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 8px;
+      background: var(--card);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      box-shadow: var(--shadow);
+      transition: 0.2s;
+    }
+    .cert-image-item:hover { border-color: var(--primary); transform: translateY(-3px); }
+    .cert-image-item a { display: block; border-radius: 6px; overflow: hidden; }
+    .cert-image-item img { display: block; width: 100%; height: auto; transition: 0.2s; }
+    .cert-image-item img:hover { transform: scale(1.02); }
+    .cert-image-item .cert-name {
+      font-size: 0.7rem;
+      color: var(--text-light);
+      margin-top: 4px;
+      line-height: 1.2;
+    }
+
+    /* ── 页脚 ── */
+    .footer {
+      margin-top: 40px;
+      padding: 18px 60px 8px 0;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      font-size: 0.7rem;
+      color: var(--text-light);
+      gap: 8px;
+    }
+
+    /* ── 返回顶部 ── */
+    .back-top {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(37, 99, 235, 0.18);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      color: #fff;
+      border: 1.5px solid rgba(255, 255, 255, 0.15);
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(37, 99, 235, 0.15);
+      transition: 0.2s;
+      z-index: 999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+    .back-top:hover { transform: scale(1.08); background: var(--primary); border-color: var(--primary); }
+
+    /* ── Canvas 粒子覆盖层 ── */
+    #confettiCanvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ── Toast 气泡 ── */
+    .toast-bubble {
+      position: fixed;
+      z-index: 10001;
+      background: var(--primary);
+      color: #fff;
+      padding: 8px 20px;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      font-family: var(--font);
+      pointer-events: none;
+      opacity: 0;
+      transform: translate(-50%, -120%) scale(0.8);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      box-shadow: 0 6px 24px rgba(37, 99, 235, 0.3);
+      white-space: nowrap;
+    }
+    .toast-bubble.show {
+      opacity: 1;
+      transform: translate(-50%, -140%) scale(1);
+    }
+
+    /* ── 渐入动画（降级：默认 opacity:1 可见） ── */
+    .anim-card {
+      /* 默认完全可见，无动画类即保持可见 */
+    }
+    .anim-card.anim-hidden {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    .anim-card.anim-visible {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* ── 桌面增强 (min-width: 768px) ── */
+    @media (min-width: 768px) {
+      .container { padding: 0 32px 48px; }
+      .navbar { padding: 12px 32px; flex-wrap: nowrap; }
+      .nav-name { font-size: 1.2rem; }
+      .nav-links { font-size: 0.9rem; gap: 28px; }
+      .hero h1 { font-size: 2.8rem; }
+      .exp-card, .project-card { padding: 20px 28px; }
+    }
+
+    /* ── 打印 ── */
+    @media print {
+      body { background: #fff; color: #000; padding-top: 0; }
+      .navbar { position: static; background: #fff; border-bottom: 1px solid #ccc; }
+      .nav-actions button, .theme-toggle { display: none; }
+      .exp-card, .project-card, .highlight-item { border: 1px solid #ccc; box-shadow: none; background: #f9f9f9; }
+      .btn { background: #2563eb; color: #fff; }
+      .tab-btn[aria-selected="true"] { background: #2563eb; color: #fff; }
+      .tab-panel[role="tabpanel"] { display: block !important; }
+      .tabs { display: none; }
+      .section { break-inside: avoid; }
+      #scrollProgress, #confettiCanvas, .toast-bubble, #backTop { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 全局滚动进度条 -->
+  <div id="scrollProgress" aria-hidden="true"></div>
+
+  <!-- 导航 -->
+  <nav class="navbar" role="navigation" aria-label="主导航">
+    <span class="nav-name">尤蝶</span>
+    <div class="nav-links">
+      <a href="#highlights">亮点</a>
+      <a href="#experience">经历</a>
+      <a href="#projects">项目</a>
+      <a href="#skills">技能</a>
+      <a href="#certificates">证书</a>
+    </div>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" aria-label="切换深浅色">🌙</button>
+      <button onclick="window.print()" aria-label="打印简历">🖨️ 打印</button>
+    </div>
+  </nav>
+
+  <div class="container max-w-[1100px] mx-auto px-4 pb-8 md:px-8 md:pb-12">
+    <!-- 英雄区 -->
+    <header class="hero">
+      <h1>尤蝶</h1>
+      <div class="tagline">「保持纯粹，无限进步」</div>
+      <div class="typewriter-wrap">
+        <span id="typewriterText"></span>
+      </div>
+      <p>中医骨伤科学在读，同时深耕 AI 与智能体应用。持有阿里达摩院、阿里云、科大讯飞多项认证，善于用大模型与 RAG 技术提效内容生产与智能问答。</p>
+      <div class="hero-badge">
+        <span>Prompt工程</span><span>RAG</span><span>智能体搭建</span><span>AIGC</span><span>新媒体运营</span>
+      </div>
+      <div class="hero-actions">
+        <a href="tel:15310082142" class="btn btn-outline" style="text-decoration:none;">📞 15310082142</a>
+        <button class="btn" id="btnCopyEmail">📧 复制邮箱</button>
+        <button class="btn" id="btnSayHi">👋 打招呼</button>
+      </div>
+    </header>
+
+    <!-- 亮点 -->
+    <section id="highlights" class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5 my-5 md:my-6">
+      <div class="highlight-item anim-card"><span class="num">1w+</span><span class="label">首发视频播放量</span></div>
+      <div class="highlight-item anim-card"><span class="num">50%</span><span class="label">选题效率提升</span></div>
+      <div class="highlight-item anim-card"><span class="num">60%</span><span class="label">内容生产耗时缩短</span></div>
+      <div class="highlight-item anim-card"><span class="num">9</span><span class="label">AI 权威认证</span></div>
+    </section>
+
+    <!-- 经历 -->
+    <section id="experience" class="section">
+      <h2 class="section-title">经历</h2>
+      <div class="tabs" role="tablist" aria-label="经历分类">
+        <button class="tab-btn" role="tab" aria-selected="true" aria-controls="panel-exp-all">全部</button>
+        <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-exp-media">自媒体</button>
+        <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-exp-ai">AI项目</button>
+      </div>
+      <div id="panel-exp-all" class="tab-panel" role="tabpanel"></div>
+      <div id="panel-exp-media" class="tab-panel" role="tabpanel"></div>
+      <div id="panel-exp-ai" class="tab-panel" role="tabpanel"></div>
+    </section>
+
+    <!-- 项目 -->
+    <section id="projects" class="section">
+      <h2 class="section-title">项目</h2>
+      <div class="tabs" role="tablist" aria-label="项目分类">
+        <button class="tab-btn" role="tab" aria-selected="true" aria-controls="panel-proj-all">全部</button>
+        <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-proj-ai">AI 应用</button>
+        <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-proj-content">内容</button>
+      </div>
+      <div id="panel-proj-all" class="tab-panel" role="tabpanel"></div>
+      <div id="panel-proj-ai" class="tab-panel" role="tabpanel"></div>
+      <div id="panel-proj-content" class="tab-panel" role="tabpanel"></div>
+    </section>
+
+    <!-- 技能 -->
+    <section id="skills" class="section">
+      <h2 class="section-title">技能矩阵</h2>
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4" id="skillGrid"></div>
+    </section>
+
+    <!-- 教育与证书 -->
+    <section id="certificates" class="section">
+      <h2 class="section-title">教育与证书</h2>
+      <div style="margin-bottom:12px;">
+        <p><strong style="color:var(--primary);">重庆中医药大学</strong> · 中医骨伤科学 本科在读 (2026.9 – 至今)</p>
+        <p style="color:var(--text-light); font-size:0.9rem;">主修：中医基础理论、人体解剖学、骨伤科影像诊断学 | GPA: 3.6+/4.0</p>
+      </div>
+      <div id="certContainer"></div>
+    </section>
+
+    <footer class="footer">
+      <span>© 2026 尤蝶 · 保持纯粹，无限进步</span>
+      <span>最后更新：2026.8</span>
+    </footer>
+  </div>
+
+  <!-- 返回顶部 -->
+  <button class="back-top" id="backTop" aria-label="返回顶部">↑</button>
+
+  <!-- Canvas 粒子层 -->
+  <canvas id="confettiCanvas" aria-hidden="true"></canvas>
+
+  <script defer>
+    (function() {
+      // ─── 数据 ───
+      const resume = {
+        experiences: [
+          {
+            id: 'media',
+            title: 'AI技术自媒体账号运营',
+            org: '独立创作者',
+            date: '2026.7 – 至今',
+            desc: [
+              '独立运营抖音账号，聚焦 AI 技术应用测评，首发视频播放量破 1 万，自然流量冷启动。',
+              '利用大模型 + RAG 搭建资讯知识库，选题效率提升约 50%，内容周期缩至 2h/条。',
+              'A/B 测试优化封面与钩子文案，互动率提升约 40%。',
+              '持续输出原创 AI 科普视频，累计播放量持续增长。'
+            ],
+            tags: ['自媒体', 'AI']
+          },
+          {
+            id: 'ai',
+            title: 'AI智能体应用开发',
+            org: '核心开发者',
+            date: '2026.7 – 至今',
+            desc: [
+              '基于阿里云百炼平台搭建中医骨伤科 RAG 智能问答系统，检索准确率 85%+。',
+              '设计多轮对话 Prompt 模板，用户满意度 90%+。',
+              '利用 PAI ArtLab 生成 AIGC 可视化素材，降低理解门槛。',
+              '完成模型微调，使回答贴合中医辨证思维。'
+            ],
+            tags: ['AI', '智能体']
+          },
+          {
+            id: 'ai',
+            title: 'AI赋能内容生产提效实践',
+            org: '项目负责人',
+            date: '2026.7 – 至今',
+            desc: [
+              '利用通义千问等大模型重构内容流程，单任务耗时缩短约 60%。',
+              '设计标准化 Prompt 指令库，覆盖文案、摘要、数据可视化等场景。',
+              'AI+人工审核输出高质量报告，获导师好评。'
+            ],
+            tags: ['AI', '内容']
+          }
+        ],
+        projects: [
+          {
+            id: 'ai',
+            title: '中医骨伤科 RAG 智能问答系统',
+            stack: ['阿里云百炼', 'RAG', 'Prompt工程', 'PAI ArtLab'],
+            desc: '构建垂直领域知识库，检索准确率 85%+，多轮对话满意度 90%+。',
+            link: '#'
+          },
+          {
+            id: 'ai',
+            title: 'AI 提效 Prompt 工具包',
+            stack: ['通义千问', '指令工程', '内容自动化'],
+            desc: '覆盖文案、摘要、PPT 大纲等高频场景，提效 60%。',
+            link: '#'
+          },
+          {
+            id: 'content',
+            title: 'AI 科普短视频系列',
+            stack: ['抖音', '脚本', '剪辑', 'RAG'],
+            desc: '首发破万播放，互动率提升 40%，持续输出技术可视化内容。',
+            link: '#'
+          }
+        ],
+        skills: [
+          { label: 'Prompt 工程', value: 92 },
+          { label: 'RAG 应用构建', value: 88 },
+          { label: '智能体开发', value: 85 },
+          { label: 'AIGC 设计', value: 80 },
+          { label: '新媒体运营', value: 82 },
+          { label: '办公效能 (PPT/Excel)', value: 78 }
+        ],
+        certificates: [
+          '人工智能训练师（初级）· 阿里达摩院',
+          '人工智能训练师（高级）· 阿里达摩院',
+          '大模型 Clouder：基于百炼构建智能体 · 阿里云',
+          '大模型 Clouder：提升内容生产力 · 阿里云',
+          '大模型 Clouder：RAG 应用构建 · 阿里云',
+          '大模型 Clouder：PAI ArtLab AIGC · 阿里云',
+          'Prompt 工程师 · 科大讯飞',
+          '智能体工程师 · 科大讯飞',
+          '微调工程师 · 科大讯飞'
+        ]
+      };
+
+      // ─── 渲染函数 ───
+      function renderExperience(panelId, filter) {
+        const panel = document.getElementById(panelId);
+        if (!panel) return;
+        let list = resume.experiences;
+        if (filter) list = list.filter(e => e.tags.includes(filter) || e.id === filter);
+        panel.innerHTML = list.map(exp => {
+          let html = `
+            <div class="exp-card anim-card">
+              <div class="exp-header">
+                <span class="exp-title">${exp.title}</span>
+                <span class="exp-org">${exp.org}</span>
+                <span class="exp-date">${exp.date}</span>
+              </div>
+              <ul class="exp-desc">${exp.desc.map(d => `<li>${d}</li>`).join('')}</ul>
+          `;
+          if (exp.id === 'media') {
+            html += `
+              <div class="exp-screenshot">
+                <a href="抖音主页.webp" target="_blank">
+                  <img src="抖音主页.webp" alt="抖音主页截图" loading="lazy">
+                </a>
+              </div>
+            `;
+          }
+          html += `</div>`;
+          return html;
+        }).join('');
+      }
+
+      function renderProjects(panelId, filter) {
+        const panel = document.getElementById(panelId);
+        if (!panel) return;
+        let list = resume.projects;
+        if (filter) list = list.filter(p => p.id === filter);
+        panel.innerHTML = list.map(p =>
+          `<div class="project-card anim-card">
+            <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:4px;">
+              <strong style="font-size:1.05rem;color:var(--text);">${p.title}</strong>
+              <span style="color:var(--text-light);font-size:0.8rem;">${p.stack.join(' · ')}</span>
+            </div>
+            <div class="project-stack">${p.stack.map(s => `<span>${s}</span>`).join('')}</div>
+            <p style="color:var(--text-light);margin:6px 0 4px;font-size:0.9rem;">${p.desc}</p>
+            <a href="${p.link}" style="font-size:0.85rem;display:inline-block;margin-top:4px;">查看详情 →</a>
+          </div>`
+        ).join('');
+      }
+
+      function renderSkills() {
+        const grid = document.getElementById('skillGrid');
+        grid.innerHTML = resume.skills.map(s =>
+          `<div class="skill-item anim-card">
+            <div class="skill-label"><span>${s.label}</span><span>${s.value}%</span></div>
+            <div class="skill-bar"><div class="fill" style="width:${s.value}%;"></div></div>
+          </div>`
+        ).join('');
+      }
+
+      function renderCertificates() {
+        const container = document.getElementById('certContainer');
+        const certImageFiles = [
+          '阿里达摩院人工智能初级训练师.webp',
+          '阿里达摩院人工智能高级训练师.webp',
+          '阿里云基于百炼平台构建智能体应用.webp',
+          '阿里云提升内容生产能力.webp',
+          '阿里云RAG应用构建及优化.webp',
+          '阿里云基于PAI artlab的AIGC设计基础.webp',
+          '科大讯飞prompt工程师.webp',
+          '科大讯飞智能体工程师.webp',
+          '科大讯飞微调工程师.webp'
+        ];
+        // 按机构分组，同时记录名称和对应图片
+        const groups = {};
+        resume.certificates.forEach((item, idx) => {
+          const parts = item.split('·');
+          if (parts.length === 2) {
+            const name = parts[0].trim();
+            const org = parts[1].trim();
+            if (!groups[org]) groups[org] = { names: [], images: [] };
+            groups[org].names.push(name);
+            groups[org].images.push({ name, file: certImageFiles[idx] || '' });
+          } else {
+            if (!groups['其他']) groups['其他'] = { names: [], images: [] };
+            groups['其他'].names.push(item);
+            groups['其他'].images.push({ name: item, file: certImageFiles[idx] || '' });
+          }
+        });
+        let html = '';
+        for (const [org, data] of Object.entries(groups)) {
+          html += `<div class="cert-group anim-card">
+            <div class="cert-group-title">${org}</div>
+            <div class="cert-group-items">${data.names.map(n => `<span class="cert-tag">${n}</span>`).join('')}</div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mt-4">`;
+          for (const img of data.images) {
+            html += `
+              <div class="cert-image-item">
+                <a href="${img.file}" target="_blank">
+                  <img src="${img.file}" alt="${img.name}" loading="lazy">
+                </a>
+                <div class="cert-name">${img.name}</div>
+              </div>`;
+          }
+          html += `</div></div>`;
+        }
+        container.innerHTML = html;
+      }
+
+      // ─── Tabs 切换 ───
+      function initTabs(containerSelector) {
+        const container = document.querySelector(containerSelector);
+        if (!container) return;
+        const tabs = container.querySelectorAll('.tab-btn');
+        const panels = container.querySelectorAll('.tab-panel');
+        panels.forEach(p => p.style.display = 'none');
+        let activeTab = container.querySelector('.tab-btn[aria-selected="true"]');
+        if (!activeTab && tabs.length) {
+          activeTab = tabs[0];
+          activeTab.setAttribute('aria-selected', 'true');
+        }
+        tabs.forEach(tab => {
+          tab.addEventListener('click', function() {
+            tabs.forEach(t => t.setAttribute('aria-selected', 'false'));
+            this.setAttribute('aria-selected', 'true');
+            const targetId = this.getAttribute('aria-controls');
+            panels.forEach(p => {
+              p.style.display = (p.id === targetId) ? 'block' : 'none';
+            });
+            // 重新扫描新显示面板中的动画卡片
+            scanAnimCards();
+          });
+        });
+        if (activeTab) {
+          const targetId = activeTab.getAttribute('aria-controls');
+          panels.forEach(p => p.style.display = (p.id === targetId) ? 'block' : 'none');
+        }
+      }
+
+      // ─── 主题切换 ───
+      function initTheme() {
+        const toggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+        toggle.textContent = '🌙';
+        toggle.addEventListener('click', function() {
+          if (html.getAttribute('data-theme') === 'dark') {
+            html.removeAttribute('data-theme');
+            toggle.textContent = '🌙';
+          } else {
+            html.setAttribute('data-theme', 'dark');
+            toggle.textContent = '☀️';
+          }
+        });
+      }
+
+      // ─── 全局滚动进度条 ───
+      function initScrollProgress() {
+        const bar = document.getElementById('scrollProgress');
+        function update() {
+          const scrollTop = window.scrollY;
+          const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+          const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+          bar.style.width = Math.min(progress, 100) + '%';
+        }
+        window.addEventListener('scroll', update, { passive: true });
+        update();
+      }
+
+      // ─── 打字机效果（即时显示，平滑切换） ───
+      function initTypewriter() {
+        const el = document.getElementById('typewriterText');
+        const words = ['数据分析探索者', '全栈开发学习者', 'AI应用实践者'];
+        let idx = 0;
+        el.textContent = words[0];
+        el.style.transition = 'opacity 0.4s ease';
+        setInterval(function() {
+          el.style.opacity = '0';
+          setTimeout(function() {
+            idx = (idx + 1) % words.length;
+            el.textContent = words[idx];
+            el.style.opacity = '1';
+          }, 400);
+        }, 3000);
+      }
+
+      // ─── Canvas 彩带粒子系统 ───
+      function initConfetti() {
+        const canvas = document.getElementById('confettiCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let animId = null;
+
+        function resize() {
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+        }
+        resize();
+        window.addEventListener('resize', resize);
+
+        const colors = [
+          '#22d3ee', '#34d399', '#f472b6', '#fbbf24', '#818cf8',
+          '#fb923c', '#67e8f9', '#a78bfa', '#f87171', '#4ade80'
+        ];
+
+        function spawn(x, y, count) {
+          for (let i = 0; i < count; i++) {
+            const angle = Math.random() * Math.PI * 2;
+            const speed = 3 + Math.random() * 8;
+            particles.push({
+              x, y,
+              vx: Math.cos(angle) * speed,
+              vy: Math.sin(angle) * speed - 3,
+              color: colors[Math.floor(Math.random() * colors.length)],
+              size: 4 + Math.random() * 6,
+              rotation: Math.random() * Math.PI * 2,
+              rotSpeed: (Math.random() - 0.5) * 0.2,
+              life: 1,
+              decay: 0.008 + Math.random() * 0.015,
+              shape: Math.random() > 0.5 ? 'rect' : 'circle'
+            });
+          }
+        }
+
+        function animate() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+          for (let i = particles.length - 1; i >= 0; i--) {
+            const p = particles[i];
+            p.x += p.vx;
+            p.vy += 0.15;
+            p.y += p.vy;
+            p.vx *= 0.99;
+            p.rotation += p.rotSpeed;
+            p.life -= p.decay;
+
+            if (p.life <= 0) {
+              particles.splice(i, 1);
+              continue;
+            }
+
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.rotation);
+            ctx.globalAlpha = p.life;
+            ctx.fillStyle = p.color;
+            if (p.shape === 'rect') {
+              ctx.fillRect(-p.size / 2, -p.size / 4, p.size, p.size / 2);
+            } else {
+              ctx.beginPath();
+              ctx.arc(0, 0, p.size / 2, 0, Math.PI * 2);
+              ctx.fill();
+            }
+            ctx.restore();
+          }
+
+          if (particles.length > 0) {
+            animId = requestAnimationFrame(animate);
+          } else {
+            animId = null;
+          }
+        }
+
+        function burst(x, y) {
+          spawn(x, y, 45);
+          if (!animId) {
+            animId = requestAnimationFrame(animate);
+          }
+        }
+
+        return { burst };
+      }
+
+      // ─── Toast 气泡反馈 ───
+      function showToast(x, y, message) {
+        const toast = document.createElement('div');
+        toast.className = 'toast-bubble';
+        toast.textContent = message;
+        toast.style.left = x + 'px';
+        toast.style.top = y + 'px';
+        document.body.appendChild(toast);
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => toast.classList.add('show'));
+        });
+        setTimeout(() => {
+          toast.classList.remove('show');
+          setTimeout(() => toast.remove(), 400);
+        }, 2000);
+      }
+
+      // ─── 复制邮箱（增强：Confetti + Toast） ───
+      let mouseX = 0, mouseY = 0;
+      document.addEventListener('mousemove', function(e) {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+      });
+      document.addEventListener('touchmove', function(e) {
+        if (e.touches.length) {
+          mouseX = e.touches[0].clientX;
+          mouseY = e.touches[0].clientY;
+        }
+      }, { passive: true });
+
+      function copyEmail(e) {
+        const email = '3439747137@qq.com';
+        const x = e ? e.clientX : mouseX;
+        const y = e ? e.clientY : mouseY;
+        navigator.clipboard.writeText(email).then(() => {
+          confetti.burst(x, y);
+          showToast(x, y, '📧 邮箱已复制!');
+        }).catch(() => {
+          const input = document.createElement('input');
+          input.value = email;
+          document.body.appendChild(input);
+          input.select();
+          document.execCommand('copy');
+          document.body.removeChild(input);
+          confetti.burst(x, y);
+          showToast(x, y, '📧 邮箱已复制!');
+        });
+      }
+
+      // ─── 打招呼（Confetti + Toast） ───
+      function sayHi(e) {
+        const x = e ? e.clientX : mouseX;
+        const y = e ? e.clientY : mouseY;
+        confetti.burst(x, y);
+        const greetings = ['你好呀! 👋', '很高兴认识你! ✨', '欢迎来访! 🎉', 'Hi there! 🚀'];
+        const msg = greetings[Math.floor(Math.random() * greetings.length)];
+        showToast(x, y, msg);
+      }
+
+      // ─── IntersectionObserver 渐入动画 ───
+      let animObserver;
+      function initAnimObserver() {
+        animObserver = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+              const el = entry.target;
+              const delay = parseInt(el.getAttribute('data-delay') || '0');
+              setTimeout(function() {
+                el.classList.remove('anim-hidden');
+                el.classList.add('anim-visible');
+              }, delay);
+              animObserver.unobserve(el);
+            }
+          });
+        }, {
+          threshold: 0.12,
+          rootMargin: '0px 0px -30px 0px'
+        });
+        scanAnimCards();
+      }
+
+      function scanAnimCards() {
+        if (!animObserver) return;
+        const cards = document.querySelectorAll('.anim-card:not(.anim-visible)');
+        cards.forEach(function(card, index) {
+          if (!card.hasAttribute('data-delay')) {
+            card.setAttribute('data-delay', (index % 5) * 80);
+          }
+          card.classList.add('anim-hidden');
+          animObserver.observe(card);
+        });
+      }
+
+      // ─── 返回顶部 ───
+      function initBackTop() {
+        const btn = document.getElementById('backTop');
+        window.addEventListener('scroll', function() {
+          btn.style.display = window.scrollY > 400 ? 'flex' : 'none';
+        }, { passive: true });
+        btn.addEventListener('click', function() {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        btn.style.display = 'none';
+      }
+
+      // ─── 绑定按钮事件 ───
+      function bindButtons() {
+        const btnCopy = document.getElementById('btnCopyEmail');
+        const btnSayHi = document.getElementById('btnSayHi');
+        if (btnCopy) {
+          btnCopy.addEventListener('click', copyEmail);
+        }
+        if (btnSayHi) {
+          btnSayHi.addEventListener('click', sayHi);
+        }
+      }
+
+      // ─── 启动 ───
+      let confetti;
+      function init() {
+        renderExperience('panel-exp-all');
+        renderExperience('panel-exp-media', 'media');
+        renderExperience('panel-exp-ai', 'ai');
+        renderProjects('panel-proj-all');
+        renderProjects('panel-proj-ai', 'ai');
+        renderProjects('panel-proj-content', 'content');
+        renderSkills();
+        renderCertificates();
+        initTabs('#experience');
+        initTabs('#projects');
+        initTheme();
+        initBackTop();
+        initScrollProgress();
+        initTypewriter();
+        confetti = initConfetti();
+        bindButtons();
+        initAnimObserver();
+      }
+
+      document.addEventListener('DOMContentLoaded', init);
+    })();
+  </script>
+</body>
+</html>
